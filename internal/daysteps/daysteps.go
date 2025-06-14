@@ -23,21 +23,21 @@ func parsePackage(data string) (int, time.Duration, error) {
 	slice := strings.Split(data, ",")
 
 	if len(slice) != 2 {
-		return 0, 0, errors.New("Длина слайса не равна 2")
+		return 0, 0, errors.New("slice length not equal 2")
 	}
 	stepCount, err := strconv.Atoi(slice[0])
 	if err != nil {
 		return 0, 0, err
 	}
 	if stepCount <= 0 {
-		return 0, 0, errors.New("Кол-во шагов <= 0")
+		return 0, 0, errors.New("step count <= 0")
 	}
 	duration, err := time.ParseDuration(slice[1])
 	if err != nil {
 		return 0, 0, err
 	}
 	if duration <= 0 {
-		return 0, 0, errors.New("Длительность <= 0")
+		return 0, 0, errors.New("duration <= 0")
 	}
 	return stepCount, duration, nil
 }

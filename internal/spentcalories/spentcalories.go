@@ -22,21 +22,21 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	slice := strings.Split(data, ",")
 
 	if len(slice) != 3 {
-		return 0, "", 0, errors.New("Длина слайса не равна 3")
+		return 0, "", 0, errors.New("slice length not equal 3")
 	}
 	stepCount, err := strconv.Atoi(slice[0])
 	if err != nil {
 		return 0, "", 0, err
 	}
 	if stepCount <= 0 {
-		return 0, "", 0, errors.New("Кол-во шагов <= 0")
+		return 0, "", 0, errors.New("step count <= 0")
 	}
 	duration, err := time.ParseDuration(slice[2])
 	if err != nil {
 		return 0, "", 0, err
 	}
 	if duration <= 0 {
-		return 0, "", 0, errors.New("Продолжительность <= 0")
+		return 0, "", 0, errors.New("duration <= 0")
 	}
 	return stepCount, slice[1], duration, nil
 }
@@ -84,16 +84,16 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
 	if steps <= 0 {
-		return 0, errors.New("Кол-во шагов <= 0")
+		return 0, errors.New("step count <= 0")
 	}
 	if weight <= 0 {
-		return 0, errors.New("Вес <= 0")
+		return 0, errors.New("weight <= 0")
 	}
 	if height <= 0 {
-		return 0, errors.New("Рост <= 0")
+		return 0, errors.New("height <= 0")
 	}
 	if duration <= 0 {
-		return 0, errors.New("Длительность <= 0")
+		return 0, errors.New("duration <= 0")
 	}
 	avgSpeed := meanSpeed(steps, height, duration)
 	spentCalories := duration.Minutes() * weight * avgSpeed / minInH
@@ -102,8 +102,17 @@ func RunningSpentCalories(steps int, weight, height float64, duration time.Durat
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
-	if steps <= 0 || weight <= 0 || height <= 0 || duration <= 0 {
-		return 0, errors.New("Некорректные входные данные")
+	if steps <= 0 {
+		return 0, errors.New("step count <= 0")
+	}
+	if weight <= 0 {
+		return 0, errors.New("weight <= 0")
+	}
+	if height <= 0 {
+		return 0, errors.New("height <= 0")
+	}
+	if duration <= 0 {
+		return 0, errors.New("duration <= 0")
 	}
 	avgSpeed := meanSpeed(steps, height, duration)
 	spentCalories := duration.Minutes() * weight * avgSpeed / minInH * walkingCaloriesCoefficient
