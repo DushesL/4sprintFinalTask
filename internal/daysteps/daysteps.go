@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
@@ -19,35 +20,24 @@ const (
 
 func parsePackage(data string) (int, time.Duration, error) {
 	// TODO: реализовать функцию
-	slice := make([]string, 0, 2)
-	var str string = ""
-	for i, symb := range data {
-		if symb != ',' {
-			str += string(symb)
-		} else {
-			slice = append(slice, str)
-			str = ""
-		}
-		if i == (len(data) - 1) {
-			slice = append(slice, str)
-		}
-	}
+	slice := strings.Split(data, ",")
+
 	if len(slice) != 2 {
-		return 0, 0, errors.New("")
+		return 0, 0, errors.New("Длина слайса не равна 2")
 	}
 	stepCount, err := strconv.Atoi(slice[0])
 	if err != nil {
 		return 0, 0, err
 	}
 	if stepCount <= 0 {
-		return 0, 0, errors.New("")
+		return 0, 0, errors.New("Кол-во шагов <= 0")
 	}
 	duration, err := time.ParseDuration(slice[1])
 	if err != nil {
 		return 0, 0, err
 	}
 	if duration <= 0 {
-		return 0, 0, errors.New("")
+		return 0, 0, errors.New("Длительность <= 0")
 	}
 	return stepCount, duration, nil
 }
@@ -56,11 +46,11 @@ func DayActionInfo(data string, weight, height float64) string {
 	// TODO: реализовать функцию
 	stepCount, duration, err := parsePackage(data)
 	if err != nil {
-		log.Println()
+		log.Print(err)
 		return ""
 	}
 	if stepCount <= 0 {
-		log.Println()
+		log.Print(err)
 		return ""
 	}
 	length := stepLength * float64(stepCount)
